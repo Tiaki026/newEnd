@@ -1,0 +1,379 @@
+/* static/css/headfoot.css - ОЧИЩЕННАЯ ВЕРСИЯ */
+
+/* ===== ОБЩИЕ СТИЛИ ДЛЯ ВСЕЙ СТРАНИЦЫ ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0; /* Убираем padding */
+    width: 100%;
+    overflow: hidden; /* Отключаем скролл у всей страницы */
+}
+
+body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 60px; /* Высота футера */
+    box-sizing: border-box;
+    background-color: #0a0a0a;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    flex-direction: column;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ===== НАВИГАЦИЯ (ХЕДЕР) ===== */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #000000;
+    min-height: 70px;
+    width: 100%;
+    border-bottom: 2px solid #333;
+    padding: 0 40px;
+    position: fixed; /* Делаем фиксированным */
+    top: 0; /* Прикрепляем к верху */
+    left: 0;
+    z-index: 1000; /* Поверх всего */
+}
+
+/* Контейнеры внутри навбара */
+.navbar-left-container,
+.navbar-center-container,
+.navbar-rightn-container {
+    padding: 0 40px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* ===== ЛЕВЫЙ КОНТЕЙНЕР (Логотип) ===== */
+.navbar-left-container {
+    flex: 0 0 auto;
+}
+
+.navbar-brand-container {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    padding: 5px 0;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.01);
+}
+
+/* ЛОГОТИП  */
+.navbar-brand img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+    transform: scale(1.05);
+}
+
+.brand-name {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover .brand-name {
+    color: #28a745;
+    text-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+}
+
+/* ===== ЦЕНТРАЛЬНЫЙ КОНТЕЙНЕР ===== */
+.navbar-center-container {
+    flex: 1;
+    justify-content: center;
+    min-width: 200px;
+}
+
+.navbar-nav-center {
+    display: flex;
+    gap: 30px;
+}
+
+/* ===== ПРАВЫЙ КОНТЕЙНЕР ===== */
+.navbar-rightn-container {
+    flex: 0 0 auto;
+    gap: 20px;
+}
+
+/* Контейнер пользователя */
+.container-user {
+    position: relative;
+}
+
+.nav-user-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #cccccc;
+    padding: 8px 15px;
+
+}
+
+
+/* Подсветка ника ЗЕЛЕНЫМ при наведении */
+.nav-user-link:hover .username {
+    color: #28a745 !important; /* Зеленый цвет */
+    text-shadow: 0 0 0px rgba(40, 167, 69, 0.5); /* Зеленое свечение */
+    transform: scale(1.01); /* Легкое увеличение */
+}
+
+.nav-user-link i {
+    font-size: 1.2rem;
+    color: #888;
+    transition: color 0.3s ease;
+}
+
+.username {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #cccccc;
+    transition: all 0.3s ease;
+    margin-left: 5px;
+}
+
+/* Контейнер кнопки выхода */
+.container-logout {
+    position: relative;
+}
+
+.nav-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    min-width: 60px;
+    height: 35px;
+}
+
+.nav-logout-btn:hover {
+    background-color: #c82333;
+    transform: translateY(0px);
+    box-shadow: 0 3px 8px rgba(220, 53, 69, 0.3);
+}
+
+.nav-logout-btn i {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+/* Текст "Выйти" */
+.nav-logout-btn span:not(.skull-icon) {
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+/* Анимация черепа - заменяет текст */
+.skull-icon {
+    position: absolute;
+    opacity: 0;
+    transform: scale(2) rotate(5deg);
+    transition: all 0.4s ease;
+    font-size: 1.6rem;
+    pointer-events: none;
+}
+
+.nav-logout-btn:hover .skull-icon {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    animation: skullAppear 0.8s ease;
+}
+
+/* Текст исчезает при наведении */
+.nav-logout-btn:hover span:not(.skull-icon),
+.nav-logout-btn:hover i {
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+@keyframes skullAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-90deg);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.2) rotate(10deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Контейнер для неавторизованных */
+.container-auth {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.container-join,
+.container-register {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #cccccc;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #555;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.container-join:hover,
+.container-register:hover {
+    background-color: #333;
+    color: #ffffff;
+    border-color: #666;
+}
+
+.container-join i,
+.container-register i {
+    font-size: 1rem;
+    margin-right: 5px;
+}
+
+/* ===== ФУТЕР ===== */
+footer {
+    background-color: black;
+    width: 100%;
+    height: 40px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000; /* Поверх всего */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 2px solid #333;
+}
+
+footer p {
+    color: white;
+    text-align: center;
+    margin: 0;
+    line-height: 60px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 1024px) {
+    .navbar-left-container,
+    .navbar-center-container,
+    .navbar-rightn-container {
+        padding: 0 25px;
+    }
+
+    .navbar-rightn-container {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        min-height: auto;
+        padding: 10px 0;
+    }
+
+    .navbar-left-container,
+    .navbar-center-container,
+    .navbar-rightn-container {
+        width: 100%;
+        justify-content: center;
+        margin: 5px 0;
+        padding: 0 15px;
+    }
+
+    .navbar-center-container {
+        order: 3;
+        margin-top: 10px;
+    }
+
+    .navbar-rightn-container {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .container-auth {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .container-join,
+    .container-register {
+        width: 100%;
+        justify-content: center;
+        max-width: 200px;
+    }
+
+    .navbar-brand img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .brand-name {
+        font-size: 1.6rem;
+    }
+
+    .nav-logout-btn,
+    .nav-user-link {
+        width: 100%;
+        justify-content: center;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .brand-name {
+        font-size: 1.4rem;
+    }
+
+    .navbar-left-container,
+    .navbar-center-container,
+    .navbar-rightn-container {
+        padding: 0 10px;
+    }
+}

@@ -1,0 +1,56 @@
+{% load static %}
+{% block header %}
+<link href="{% static 'css/headfoot.css' %}" rel="stylesheet">
+<nav class="navbar">
+    <div class="navbar-left-container">
+        <!-- Контейнер 1: Логотип и название -->
+        <div class="navbar-brand-container">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'img/logo_1.png' %}" alt="">
+                <span class="brand-name">END</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Контейнер для всего остального -->
+    <div class="navbar-center-container">
+        <!-- Контейнер 2: Навигация (пока пустой, будет позже) -->
+        <div class="navbar-nav-center">
+            <!-- Здесь будут ссылки навигации -->
+        </div>
+    </div>
+
+    <!-- Контейнеры 3 и 4: Пользователь и выход -->
+    <div class="navbar-rightn-container">
+        {% if user.is_authenticated %}
+            <!-- Контейнер 3: Пользователь (ссылка на профиль) -->
+        <div class="container-user">
+            <a href="#" class="nav-user-link">
+                <i class="bi bi-person-circle me-2"></i>
+                <span class="username">{{ user.username }}</span>
+            </a>
+        </div>
+        <!-- Контейнер 4: Кнопка выхода -->
+        <div class="container-logout">
+            <a href="#" class="nav-logout-btn">
+                <i class="bi bi-box-arrow-right me-2"></i>
+                <span>Выйти</span>
+                <span class="skull-icon">💀</span>
+            </a>
+        </div>
+        {% else %}
+        <!-- Для неавторизованных -->
+        <div class="container-auth">
+            <a href="#" class="container-join">
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                Войти
+            </a>
+            <a href="#" class="container-register">
+                <i class="bi bi-person-plus me-2"></i>
+                Регистрация
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</nav>
+{% endblock %}

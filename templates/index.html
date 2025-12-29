@@ -1,0 +1,138 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+<div class="main-container">
+    <!-- Контейнер 1: Широкое поле с приветствием -->
+    <div class="container-1">
+        <div class="welcome-content">
+            <h1 class="welcome-title">
+                <i class="bi bi-joystick me-3"></i>
+                Добро пожаловать!
+            </h1>
+            <p class="welcome-text">
+                Система для управления персонажами и организации рейдов
+            </p>
+
+            {% if not user.is_authenticated %}
+            <div class="welcome-buttons">
+                <a href="#" class="btn-start-now">
+                    <i class="bi bi-person-plus me-2"></i>
+                    Начать сейчас
+                </a>
+                <a href="#" class="btn-learn-more">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Узнать больше
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Карточки (по 3 в ряд) -->
+    <div class="cards-row">
+        <!-- Карточка 1 -->
+        <div class="card-1">
+            <div class="card-icon">
+                <i class="bi bi-person-plus"></i>
+            </div>
+            <h3 class="card-title">Создание персонажей</h3>
+            <p class="card-text">
+                Создавайте уникальных персонажей с выбором класса, специализации и роли
+            </p>
+        </div>
+
+        <!-- Карточка 2 -->
+        <div class="card-2">
+            <div class="card-icon">
+                <i class="bi bi-people"></i>
+            </div>
+            <h3 class="card-title">Управление персонажами</h3>
+            <p class="card-text">
+                Просматривайте и управляйте всеми своими персонажами в одном месте
+            </p>
+        </div>
+
+        <!-- Карточка 3 -->
+        <div class="card-3">
+            <div class="card-icon">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+            <h3 class="card-title">Организация рейдов</h3>
+            <p class="card-text">
+                Записывайтесь на рейды и отслеживайте посещаемость
+            </p>
+        </div>
+
+        <!-- Карточка 4 -->
+        <div class="card-4">
+            <div class="card-icon">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <h3 class="card-title">Безопасность</h3>
+            <p class="card-text">
+                Ваши данные защищены современными методами шифрования
+            </p>
+        </div>
+
+        <!-- Карточка 5 -->
+        <div class="card-5">
+            <div class="card-icon">
+                <i class="bi bi-speedometer2"></i>
+            </div>
+            <h3 class="card-title">Статистика</h3>
+            <p class="card-text">
+                Детальная статистика по всем вашим персонажам и активности
+            </p>
+        </div>
+
+        <!-- Карточка 6 -->
+        <div class="card-6">
+            <div class="card-icon">
+                <i class="bi bi-chat-dots"></i>
+            </div>
+            <h3 class="card-title">Сообщество</h3>
+            <p class="card-text">
+                Присоединяйтесь к активному сообществу игроков
+            </p>
+        </div>
+    </div>
+
+    <!-- Последняя широкая карточка (для авторизованных) -->
+    {% if user.is_authenticated %}
+    <div class="container-wide">
+        <div class="wide-content">
+            <h3 class="wide-title">
+                <i class="bi bi-graph-up me-2"></i>
+                Ваша активность
+            </h3>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Персонажей</div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Основных</div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Посещено рейдов</div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-number">0%</div>
+                    <div class="stat-label">Посещаемость</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+<!-- templates/errors/500.html -->
+{% extends 'base.html' %}
+
+{% block title %}500 - Ошибка сервера{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-code">500</div>
+    <h1>Ошибка сервера</h1>
+    <p>Что-то пошло не так на нашей стороне. Мы уже работаем над исправлением.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary">
+        <i class="fas fa-home"></i> Вернуться на главную
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+<!-- templates/characters/list.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Мои персонажи{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Мои персонажи</h1>
+
+{% if characters %}
+    <div class="row">
+        {% for character in characters %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card character-card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">{{ character.name }}</h5>
+                            {% if character.is_main %}
+                                <span class="badge bg-warning">⭐ Основной</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="{% static 'img/classes/' %}{{ character.character_class.name }}.png"
+                                     alt="{{ character.character_class.get_name_display }}"
+                                     class="img-fluid rounded">
+                            </div>
+                            <div class="col-8">
+                                <p><strong>Класс:</strong> {{ character.character_class.get_name_display }}</p>
+                                <p><strong>Специализация:</strong> {{ character.specialization.name }}</p>
+                                <p><strong>Роль:</strong> {{ character.specialization.get_role_display }}</p>
+                                <p><strong>Уровень предметов:</strong> {{ character.item_level }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">
+                                Создан: {{ character.created_at|date:"d.m.Y" }}
+                            </small>
+                            <div>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                                <a href="#" class="btn btn-sm btn-outline-danger">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+
+{% endif %}
+
+{% endblock %}
