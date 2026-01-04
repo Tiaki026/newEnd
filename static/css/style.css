@@ -1,39 +1,53 @@
 /* static/css/style.css - СТИЛИ ДЛЯ ГЛАВНОЙ СТРАНИЦЫ */
 body {
-    font-family: 'Geometria';
-    background: url('../img/background.png') no-repeat center center;
+    background: radial-gradient(
+        circle at 50% 10%, /* Центр смещен кверху */
+        rgba(147, 167, 151, 0.1) 1%,     /* Яркий зеленый */
+        rgba(147, 167, 151, 0.5) 10%,    /* Средний зеленый */
+        rgba(147, 167, 151, 0.7) 30%,      /* Темный зеленый */
+        rgba(147, 167, 151, 0.9) 35%,      /* Очень темный */
+        rgba(0, 0, 0, 1) 100%           /* Практически черный (раньше) */
+    );
+    /* backdrop-filter: blur(100px); */
+    background-attachment: fixed;
     background-size: cover;
-    height: 10vh;
     overflow-y: auto;
     background-attachment: fixed;
     justify-content: center;
     align-items: center;
 }
+
 /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
 .main-container {
     max-width: 100%;
+    max-height: 100%;
     width: 1200px;
-    margin-top: 100px;      /* Отступ от хедера (70px хедер + 10px) */
     margin-bottom: 0px;   /* Отступ от футера (60px футер - 20px) */
     margin-left: auto;
     margin-right: auto;
-    padding: 50px;
-    background-color: rgba(255, 255, 255, 0.1); /* Белый прозрачный на 80% */
-    backdrop-filter: blur(50px); /* Эффект стекла */
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    background-color: rgba(147, 167, 151, 0.9);
     position: relative;
     z-index: 1;
 }
 
+.container-0 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+    margin-bottom: 40px;
+}
+
+.container-0 img {
+    max-width: 100%;
+    width: 1100px;
+    height: 350px;
+    object-fit: cover;
+}
 /* ===== КОНТЕЙНЕР 1: ШИРОКОЕ ПОЛЕ С ПРИВЕТСТВИЕМ ===== */
 .container-1 {
-    background-color: rgba(255, 255, 255, 0.9); /* Ближе к белому */
-    border-radius: 15px;
-    padding: 40px 30px;
-    margin-bottom: 40px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 70px;
 }
 
 .welcome-content {
@@ -50,11 +64,6 @@ body {
     justify-content: center;
 }
 
-.welcome-title i {
-    color: rgba(40, 167, 69, 0.9); /* Зеленый цвет для иконки */
-    font-size: 2.8rem;
-}
-
 .welcome-text {
     color: rgba(0, 0, 0, 0.7);
     font-size: 1.2rem;
@@ -62,134 +71,84 @@ body {
     line-height: 1.6;
 }
 
-.welcome-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn-start-now {
-    display: inline-flex;
-    align-items: center;
-    background-color: rgba(40, 167, 69, 0.9); /* Зеленый */
-    color: white;
-    padding: 14px 28px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    border: 2px solid rgba(40, 167, 69, 0.9);
-}
-
-.btn-start-now:hover {
-    background-color: rgba(32, 201, 151, 0.9); /* Более яркий зеленый */
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
-}
-
-.btn-learn-more {
-    display: inline-flex;
-    align-items: center;
-    background-color: transparent;
-    color: rgba(40, 167, 69, 0.9);
-    padding: 14px 28px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    border: 2px solid rgba(40, 167, 69, 0.9);
-}
-
-.btn-learn-more:hover {
-    background-color: rgba(40, 167, 69, 0.1);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.2);
-}
-
 /* ===== РЯД С КАРТОЧКАМИ ===== */
 .cards-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
     margin-bottom: 40px;
+    width: 100%;
+    justify-content: center; /* Центрируем карточки */
+    align-items: center;
 }
 
 /* ОБЩИЕ СТИЛИ ДЛЯ КАРТОЧЕК */
-.card-1, .card-2, .card-3, .card-4, .card-5, .card-6 {
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 12px;
-    padding: 30px 25px;
-    text-align: center;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+.card-1, .card-2, .card-3 {
+    border-radius: 5px;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(0, 0, 0, 0.9);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 280px;
+    height: 300px; /* Чуть выше для картинки */
+    width: 300px;
+    overflow: hidden; /* Чтобы картинка не выходила за границы */
+    position: relative;
 }
-
-.card-1:hover, .card-2:hover, .card-3:hover,
-.card-4:hover, .card-5:hover, .card-6:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* Иконки карточек */
-.card-icon {
-    margin-bottom: 20px;
-}
-
-.card-icon i {
-    font-size: 3.5rem;
-    display: block;
-}
-
-/* Цвета иконок для каждой карточки */
-.card-1 .card-icon i { color: rgba(0, 123, 255, 0.9); } /* Синий */
-.card-2 .card-icon i { color: rgba(40, 167, 69, 0.9); } /* Зеленый */
-.card-3 .card-icon i { color: rgba(255, 193, 7, 0.9); } /* Желтый */
-.card-4 .card-icon i { color: rgba(111, 66, 193, 0.9); } /* Фиолетовый */
-.card-5 .card-icon i { color: rgba(23, 162, 184, 0.9); } /* Голубой */
-.card-6 .card-icon i { color: rgba(220, 53, 69, 0.9); } /* Красный */
-
-/* Заголовки карточек */
 .card-title {
-    color: rgba(0, 0, 0, 0.9);
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 15px;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1px;
+    z-index: 3; /* Текст поверх всего */
+    position: relative; /* Для корректного z-index */
+    padding: 3px; /* Отступы от краев */
+}
+.card-1:hover, .card-2:hover, .card-3:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px rgba(0, 150, 0, 0.7);
 }
 
-/* Текст карточек */
-.card-text {
-    color: rgba(0, 0, 0, 0.7);
-    font-size: 1rem;
-    line-height: 1.5;
-    flex-grow: 1;
+.card-image {
+    position: absolute; /* Абсолютное позиционирование */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Картинка на заднем плане */
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Картинка заполняет контейнер */
+}
+
+.card-link {
+    text-decoration: none; /* Убираем подчеркивание */
+    display: inline-block; /* Чтобы ссылка обернула карточку */
 }
 
 /* ===== ШИРОКАЯ КАРТОЧКА (для авторизованных) ===== */
 .container-wide {
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    padding: 10px 10px;
-    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 100%;
+    max-width: 500px;
+    padding: 20px 10px;
+    text-align: center;
 }
 
 .wide-content {
     text-align: center;
+    width: 100%;
 }
 
 .wide-title {
     color: rgba(0, 0, 0, 0.9);
     font-size: 1.8rem;
     font-weight: 600;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -204,22 +163,14 @@ body {
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 30px;
     margin-bottom: 30px;
-}
-
-.stat-item {
-    background-color: rgba(248, 249, 250, 0.2);
-    border-radius: 10px;
-    padding: 25px 15px;
-    transition: all 0.3s ease;
 }
 
 .stat-number {
     color: rgba(0, 0, 0, 0.9);
     font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: 8px;
 }
 
 /* Цвета для чисел статистики */
@@ -234,117 +185,23 @@ body {
     font-weight: 500;
 }
 
-/* Кнопка создания персонажа */
-.wide-button-container {
-    margin-top: 20px;
+.container-latest-news {
+    width: 100%;
+    max-width: 1100px;
+    padding: 20px 10px;
+    text-align: center;
+}
+.news-content {
+    text-align: center;
+    width: 100%;
 }
 
-.btn-create-character {
-    display: inline-flex;
-    align-items: center;
-    background-color: rgba(40, 167, 69, 0.1);
-    color: rgba(40, 167, 69, 0.9);
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
+.news-title {
+    color: rgba(0, 0, 0, 0.9);
+    font-size: 1.8rem;
     font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    border: 2px solid rgba(40, 167, 69, 0.9);
-}
-
-.btn-create-character:hover {
-    background-color: rgba(40, 167, 69, 0.9);
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
-}
-
-/* ===== АДАПТИВНОСТЬ ===== */
-@media (max-width: 1024px) {
-    .cards-row {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 25px;
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .welcome-title {
-        font-size: 2.2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .main-container {
-        width: 95%;
-        margin: 20px auto;
-        padding: 15px;
-    }
-    
-    .container-1,
-    .container-wide {
-        padding: 0px 10px;
-    }
-    
-    .cards-row {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .welcome-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn-start-now,
-    .btn-learn-more {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-    }
-    
-    .welcome-title {
-        font-size: 1.8rem;
-        flex-direction: column;
-    }
-    
-    .welcome-title i {
-        margin-bottom: 10px;
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .main-container {
-        margin: 10px auto;
-        padding: 10px;
-    }
-    
-    .container-1,
-    .container-wide {
-        padding: 20px 15px;
-    }
-    
-    .welcome-title {
-        font-size: 1.6rem;
-    }
-    
-    .welcome-text {
-        font-size: 1rem;
-    }
-    
-    .card-1, .card-2, .card-3, .card-4, .card-5, .card-6 {
-        padding: 20px 15px;
-        min-height: 250px;
-    }
-    
-    .card-title {
-        font-size: 1.2rem;
-    }
+    /* margin-bottom: 30px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

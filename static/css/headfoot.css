@@ -6,7 +6,7 @@ html, body {
     margin: 0;
     padding: 0; /* Убираем padding */
     width: 100%;
-    overflow: hidden; /* Отключаем скролл у всей страницы */
+
 }
 
 body {
@@ -95,8 +95,7 @@ body {
 }
 
 .navbar-brand:hover .brand-name {
-    color: #28a745;
-    text-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+    color: #00ff3c;
 }
 
 /* ===== ЦЕНТРАЛЬНЫЙ КОНТЕЙНЕР ===== */
@@ -134,9 +133,8 @@ body {
 
 /* Подсветка ника ЗЕЛЕНЫМ при наведении */
 .nav-user-link:hover .username {
-    color: #28a745 !important; /* Зеленый цвет */
-    text-shadow: 0 0 0px rgba(40, 167, 69, 0.5); /* Зеленое свечение */
-    transform: scale(1.01); /* Легкое увеличение */
+    color: #00ff3c;
+
 }
 
 .nav-user-link i {
@@ -272,108 +270,21 @@ footer {
     background-color: black;
     width: 100%;
     height: 40px;
-    position: fixed;
+    position: bottom; /* Делаем фиксированным */
     bottom: 0;
     left: 0;
-    z-index: 1000; /* Поверх всего */
+    z-index: 1000; /* Чтобы был поверх контента */
     display: flex;
     align-items: center;
     justify-content: center;
-    border-top: 2px solid #333;
+    border-top: 1px solid #333;
 }
 
 footer p {
     color: white;
     text-align: center;
     margin: 0;
-    line-height: 60px;
+    line-height: 40px; /* Совпадает с высотой футера */
     font-size: 0.9rem;
     opacity: 0.8;
-}
-
-/* ===== АДАПТИВНОСТЬ ===== */
-@media (max-width: 1024px) {
-    .navbar-left-container,
-    .navbar-center-container,
-    .navbar-rightn-container {
-        padding: 0 25px;
-    }
-
-    .navbar-rightn-container {
-        gap: 15px;
-    }
-}
-
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        min-height: auto;
-        padding: 10px 0;
-    }
-
-    .navbar-left-container,
-    .navbar-center-container,
-    .navbar-rightn-container {
-        width: 100%;
-        justify-content: center;
-        margin: 5px 0;
-        padding: 0 15px;
-    }
-
-    .navbar-center-container {
-        order: 3;
-        margin-top: 10px;
-    }
-
-    .navbar-rightn-container {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    .container-auth {
-        flex-direction: column;
-        width: 100%;
-        gap: 8px;
-    }
-
-    .container-join,
-    .container-register {
-        width: 100%;
-        justify-content: center;
-        max-width: 200px;
-    }
-
-    .navbar-brand img {
-        width: 48px;
-        height: 48px;
-    }
-
-    .brand-name {
-        font-size: 1.6rem;
-    }
-
-    .nav-logout-btn,
-    .nav-user-link {
-        width: 100%;
-        justify-content: center;
-        max-width: 200px;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar-brand img {
-        width: 40px;
-        height: 40px;
-    }
-
-    .brand-name {
-        font-size: 1.4rem;
-    }
-
-    .navbar-left-container,
-    .navbar-center-container,
-    .navbar-rightn-container {
-        padding: 0 10px;
-    }
 }

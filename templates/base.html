@@ -1,9 +1,17 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ru">
-{% load static %}
+<meta charset="UTF-8">
+<link rel="icon" href="{% static 'img/favicon/favicon.ico' %}" type="image/x-icon">
+<link rel="shortcut icon" href="{% static 'img/favicon/favicon.ico' %}" type="image/x-icon">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon/favicon-16x16.png' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/apple-touch-icon.png' %}">
+<link rel="manifest" href="{% static 'img/favicon/site.webmanifest' %}">
+<meta name="theme-color" content="#28a745"> <!-- Зеленый цвет темы -->
+<meta name="msapplication-TileColor" content="#28a745">
+<meta name="msapplication-TileImage" content="{% static 'img/favicon/mstile-144x144.png' %}">
 <head>
-    <meta charset="UTF-8">
     {% block head %}
     {% endblock %}
     <title>{{ title }}</title>

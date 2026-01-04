@@ -6,67 +6,61 @@
 
 <div class="main-container">
     <!-- Контейнер 1: Широкое поле с приветствием -->
+    <div class="container-0">
+        <img src="{% static 'img/background2.png' %}" alt="">
+    </div>
     <div class="container-1">
         <div class="welcome-content">
             <h1 class="welcome-title">
                 <i class="bi bi-joystick me-3"></i>
-                Добро пожаловать!
+                Добро пожаловать в END!
             </h1>
             <p class="welcome-text">
-                Система для управления персонажами и организации рейдов
+                Сайт гильдии END
             </p>
-
-            {% if not user.is_authenticated %}
-            <div class="welcome-buttons">
-                <a href="#" class="btn-start-now">
-                    <i class="bi bi-person-plus me-2"></i>
-                    Начать сейчас
-                </a>
-                <a href="#" class="btn-learn-more">
-                    <i class="bi bi-info-circle me-2"></i>
-                    Узнать больше
-                </a>
-            </div>
-            {% endif %}
         </div>
     </div>
 
     <!-- Карточки (по 3 в ряд) -->
     <div class="cards-row">
         <!-- Карточка 1 -->
-        <div class="card-1">
-            <div class="card-icon">
-                <i class="bi bi-person-plus"></i>
+        <a href="{% url 'index' %}" class="card-link">
+            <div class="card-1">
+                <div class="card-image">
+                    <img src="{% static 'img/raids.jpg' %}" alt="Рейды">
+                    <div class="card-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                </div>
+                <h3 class="card-title">Рейды</h3>
             </div>
-            <h3 class="card-title">Создание персонажей</h3>
-            <p class="card-text">
-                Создавайте уникальных персонажей с выбором класса, специализации и роли
-            </p>
-        </div>
+        </a>
 
         <!-- Карточка 2 -->
-        <div class="card-2">
-            <div class="card-icon">
-                <i class="bi bi-people"></i>
+        <a href="{% url 'index' %}" class="card-link">
+            <div class="card-2">
+                <div class="card-image">
+                    <img src="{% static 'img/logs.jpg' %}" alt="Логи">
+                    <div class="card-icon">
+                        <i class="bi bi-journal-text"></i>
+                    </div>
+                </div>
+                <h3 class="card-title">Логи</h3>
             </div>
-            <h3 class="card-title">Управление персонажами</h3>
-            <p class="card-text">
-                Просматривайте и управляйте всеми своими персонажами в одном месте
-            </p>
-        </div>
+        </a>
 
         <!-- Карточка 3 -->
-        <div class="card-3">
+        {% comment %} <div class="card-3">
             <div class="card-icon">
-                <i class="bi bi-calendar-check"></i>
+                <i class="bi"></i>
             </div>
-            <h3 class="card-title">Организация рейдов</h3>
+            <h3 class="card-title"></h3>
             <p class="card-text">
                 Записывайтесь на рейды и отслеживайте посещаемость
             </p>
-        </div>
+        </div> {% endcomment %}
 
-        <!-- Карточка 4 -->
+        {% comment %} <!-- Карточка 4 -->
         <div class="card-4">
             <div class="card-icon">
                 <i class="bi bi-shield-check"></i>
@@ -98,17 +92,17 @@
                 Присоединяйтесь к активному сообществу игроков
             </p>
         </div>
-    </div>
+    </div> {% endcomment %}
 
     <!-- Последняя широкая карточка (для авторизованных) -->
-    {% if user.is_authenticated %}
+    
     <div class="container-wide">
+        {% if user.is_authenticated %}
         <div class="wide-content">
             <h3 class="wide-title">
-                <i class="bi bi-graph-up me-2"></i>
+                <i class="bi bi-joystick me-3"></i>
                 Ваша активность
             </h3>
-
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-number">0</div>
@@ -116,8 +110,8 @@
                 </div>
 
                 <div class="stat-item">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">Основных</div>
+                    <div class="stat-number">(картинка)</div>
+                    <div class="stat-label">Основной</div>
                 </div>
 
                 <div class="stat-item">
@@ -130,9 +124,19 @@
                     <div class="stat-label">Посещаемость</div>
                 </div>
             </div>
-
         </div>
+        {% else %}
+        <div class="wide-content">
+            <h3 class="wide-title">
+                <i class="ai"></i>
+                Стать частью END
+            </h3>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
+    <div class="container-latest-news">
+        <div class="news-title">Новости</div>
+        <div class="news-content"></div>
+    </div>
 </div>
 {% endblock %}
