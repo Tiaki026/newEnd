@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link href="{% static 'css/auth.css' %}" rel="stylesheet">
+<div class="auth-container">
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Заголовок с иконкой -->
+            <div class="auth-header">
+                <div class="auth-icon">
+                    <i class="bi bi-shield-lock"></i>
+                </div>
+                <h2>Вход в END</h2>
+                <p class="auth-subtitle">Войдите в свой аккаунт, чтобы продолжить</p>
+            </div>
+
+            <!-- Сообщения об ошибках -->
+            {% load user_filters %}
+            {% if form.errors %}
+                <div class="auth-alert error">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <span>Неправильный логин или пароль</span>
+                </div>
+            {% endif %}
+
+            <!-- Форма -->
+            <form method="post" action="{% url 'users:login' %}" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_username" class="form-label">
+                        <i class="bi bi-person"></i>
+                        Имя пользователя
+                    </label>
+                    <div class="input-with-icon">
+                        <input type="text" 
+                               name="username" 
+                               id="id_username" 
+                               class="form-input" 
+                               required
+                               placeholder="Введите ваш username">
+                        <span class="input-icon">
+                            <i class="bi bi-person-circle"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_password" class="form-label">
+                        <i class="bi bi-key"></i>
+                        Пароль
+                    </label>
+                    <div class="input-with-icon">
+                        <input type="password" 
+                               name="password" 
+                               id="id_password" 
+                               class="form-input" 
+                               required
+                               placeholder="Введите ваш пароль">
+                        <span class="input-icon">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Дополнительные опции -->
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember">
+                        <span>Запомнить меня</span>
+                    </label>
+                    <a href="{% url 'users:password_reset_form' %}" class="forgot-link">
+                        Забыли пароль?
+                    </a>
+                </div>
+
+                <!-- Кнопка отправки -->
+                <button type="submit" class="auth-btn primary">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Войти в систему
+                </button>
+
+                <!-- Разделитель -->
+                <div class="auth-divider">
+                    <span>или</span>
+                </div>
+
+                <!-- Ссылка на регистрацию -->
+                <div class="auth-footer">
+                    <p>Нет аккаунта? <a href="{% url 'users:signup' %}" class="auth-link">Присоединиться к END</a></p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Декоративный элемент -->
+        <div class="auth-decoration">
+            <div class="decoration-icon">
+                <i class="bi bi-dice-5"></i>
+            </div>
+            <p class="decoration-text">
+                Войдите, чтобы создавать персонажей, присоединяться к группам и участвовать в рейдах
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

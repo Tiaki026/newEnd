@@ -1,0 +1,16 @@
+{% load static %}
+<div class="wide-content">
+    <div class="container-0">
+        <img src="{% static 'img/troll_auth.png' %}" alt="">
+    </div>
+    <h3 class="wide-title">
+        <i class="ai"></i>
+        <div class="container-auth">
+            <a href="{% url 'users:login' %}" class="login-btn">
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                <span>Снять печать</span>
+                <span class="gamepad-icon">🎮</span>
+            </a>
+        </div>
+    </h3>
+</div>

@@ -7,7 +7,7 @@
 <div class="main-container">
     <!-- Контейнер 1: Широкое поле с приветствием -->
     <div class="container-0">
-        <img src="{% static 'img/background2.png' %}" alt="">
+        <img src="{% static 'img/bg_te1.png' %}" alt="">
     </div>
     <div class="container-1">
         <div class="welcome-content">
@@ -16,11 +16,12 @@
                 Добро пожаловать в END!
             </h1>
             <p class="welcome-text">
-                Сайт гильдии END
+                Здесь вы можете найти информацию по набору в статик, актуальные гайды сервера firestorm, полезные аддоны и новости.
+                
             </p>
         </div>
     </div>
-
+    {% if user.is_authenticated %}
     <!-- Карточки (по 3 в ряд) -->
     <div class="cards-row">
         <!-- Карточка 1 -->
@@ -49,55 +50,8 @@
             </div>
         </a>
 
-        <!-- Карточка 3 -->
-        {% comment %} <div class="card-3">
-            <div class="card-icon">
-                <i class="bi"></i>
-            </div>
-            <h3 class="card-title"></h3>
-            <p class="card-text">
-                Записывайтесь на рейды и отслеживайте посещаемость
-            </p>
-        </div> {% endcomment %}
-
-        {% comment %} <!-- Карточка 4 -->
-        <div class="card-4">
-            <div class="card-icon">
-                <i class="bi bi-shield-check"></i>
-            </div>
-            <h3 class="card-title">Безопасность</h3>
-            <p class="card-text">
-                Ваши данные защищены современными методами шифрования
-            </p>
-        </div>
-
-        <!-- Карточка 5 -->
-        <div class="card-5">
-            <div class="card-icon">
-                <i class="bi bi-speedometer2"></i>
-            </div>
-            <h3 class="card-title">Статистика</h3>
-            <p class="card-text">
-                Детальная статистика по всем вашим персонажам и активности
-            </p>
-        </div>
-
-        <!-- Карточка 6 -->
-        <div class="card-6">
-            <div class="card-icon">
-                <i class="bi bi-chat-dots"></i>
-            </div>
-            <h3 class="card-title">Сообщество</h3>
-            <p class="card-text">
-                Присоединяйтесь к активному сообществу игроков
-            </p>
-        </div>
-    </div> {% endcomment %}
-
-    <!-- Последняя широкая карточка (для авторизованных) -->
-    
     <div class="container-wide">
-        {% if user.is_authenticated %}
+
         <div class="wide-content">
             <h3 class="wide-title">
                 <i class="bi bi-joystick me-3"></i>
@@ -125,18 +79,14 @@
                 </div>
             </div>
         </div>
-        {% else %}
-        <div class="wide-content">
-            <h3 class="wide-title">
-                <i class="ai"></i>
-                Стать частью END
-            </h3>
+        <div class="container-latest-news">
+            <div class="news-title">Новости</div>
+            <div class="news-content"></div>
         </div>
+        {% else %}
+            {% include 'index_not_auth.html' %}
         {% endif %}
     </div>
-    <div class="container-latest-news">
-        <div class="news-title">Новости</div>
-        <div class="news-content"></div>
-    </div>
+
 </div>
 {% endblock %}

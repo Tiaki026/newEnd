@@ -1,0 +1,43 @@
+/* ===== ОСНОВНОЙ МАКЕТ ===== */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Главный контейнер для контента */
+.main-wrapper {
+    flex: 1 0 auto; /* Растягивается на всю доступную высоту */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Основной контент */
+.main-content {
+    flex: 1; /* Занимает все оставшееся пространство */
+    padding-bottom: 20px; /* Отступ от футера */
+}
+
+/* ===== ФУТЕР ===== */
+footer {
+    background-color: black;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgba(0, 255, 136, 0.18);
+    margin-top: auto; /* Ключевое свойство - прижимает к низу */
+    flex-shrink: 0; /* Не сжимается */
+}
+
+footer p {
+    color: white;
+    text-align: center;
+    margin: 0;
+    line-height: 40px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}

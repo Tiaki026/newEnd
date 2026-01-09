@@ -1,0 +1,14 @@
+.container-0 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+    margin-bottom: 40px;
+}
+
+.container-0 img {
+    max-width: 100%;
+    width: 1100px;
+    height: 350px;
+    object-fit: cover;
+}

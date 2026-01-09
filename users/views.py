@@ -1,43 +1,16 @@
-# users/views.py
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.contrib.auth.models import User
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from .forms import CreationForm
+from django.shortcuts import redirect
+from django.contrib.auth import logout
 
 
+class SignUp(CreateView):
+    form_class = CreationForm
+    success_url = reverse_lazy('users:login')
+    template_name = 'users/signup.html'
 
 
-def register(request):
-    """Регистрация нового пользователя"""
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Автоматически входим после регистрации
-            messages.success(
-                request, "Регистрация прошла успешно! Добро пожаловать!"
-            )
-            return redirect("characters:list")  # Перенаправляем к персонажам
-    else:
-        form = UserCreationForm()
-
-    return render(request, "users/register.html", {"form": form})
-
-
-@login_required
-def profile(request):
-    """Профиль пользователя"""
-    user = request.user
-    # Можно добавить статистику пользователя
-    return render(request, "users/profile.html", {"user": user})
-
-
-@login_required
-def profile_edit(request):
-    """Редактирование профиля"""
-    if request.method == "POST":
-        # Здесь можно добавить форму для редактирования профиля
-        pass
-    return render(request, "users/profile_edit.html")
+def only_user_view(request):
+    if not request.user.is_authenticated:
+        return redirect('/auth/login/')

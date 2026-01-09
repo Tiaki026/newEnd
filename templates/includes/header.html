@@ -1,5 +1,6 @@
 {% load static %}
-<link href="{% static 'css/headfoot.css' %}" rel="stylesheet">
+<link href="{% static 'css/header.css' %}" rel="stylesheet">
+<link href="{% static 'css/footer.css' %}" rel="stylesheet">
 {% block header %}
 <nav class="navbar">
     <div class="navbar-left-container">
@@ -32,24 +33,24 @@
         </div>
         <!-- Контейнер 4: Кнопка выхода -->
         <div class="container-logout">
-            <a href="#" class="nav-logout-btn">
-                <i class="bi bi-box-arrow-right me-2"></i>
-                <span>Выйти</span>
-                <span class="skull-icon">💀</span>
-            </a>
+            <form method="post" action="{% url 'users:logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="nav-logout-btn">
+                    <i class="bi bi-box-arrow-right me-2"></i>
+                    <span>Выйти</span>
+                    <span class="skull-icon">💀</span>
+                </button>
+            </form>
         </div>
-        {% else %}
+        {% comment %} {% else %}
         <!-- Для неавторизованных -->
         <div class="container-auth">
-            <a href="#" class="container-join">
+            <a href="{% url 'users:login' %}" class="nav-login-btn">
                 <i class="bi bi-box-arrow-in-right me-2"></i>
-                Войти
+                <span>Стань частью END</span>
+                <span class="gamepad-icon">🎮</span>
             </a>
-            <a href="#" class="container-register">
-                <i class="bi bi-person-plus me-2"></i>
-                Регистрация
-            </a>
-        </div>
+        </div> {% endcomment %}
         {% endif %}
     </div>
 </nav>
