@@ -26,7 +26,7 @@
         {% if user.is_authenticated %}
             <!-- Контейнер 3: Пользователь (ссылка на профиль) -->
         <div class="container-user">
-            <a href="#" class="nav-user-link">
+            <a href="{% url 'users:profile' %}" class="nav-user-link">
                 <i class="bi bi-person-circle me-2"></i>
                 <span class="username">{{ user.username }}</span>
             </a>

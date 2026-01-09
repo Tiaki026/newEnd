@@ -2,17 +2,26 @@
 body {
     background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
     background-attachment: fixed;
-    overflow-y: auto;
-    margin: 0;
-    padding: 0;
-    /* color: #ffffff; */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
+    /* min-height: 100vh; */
+    /* overflow-x: hidden; */
 }
 
-body::before {
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    margin-top: 50px;
+    /* margin-left: 180px; */
+}
+
+/* Фоновые эффекты для страницы авторизации */
+.auth-container::before {
     content: '';
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     right: 0;
@@ -22,40 +31,22 @@ body::before {
         radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.05) 0%, transparent 50%);
     z-index: -1;
 }
-.auth-container {
-    min-height: calc(100vh - 200px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    /* background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%); */
-    position: relative;
-    overflow: hidden;
-}
 
-.auth-container::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    /* background: 
-        radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.05) 0%, transparent 50%); */
-}
-
+/* Центрирующий враппер */
 .auth-wrapper {
     display: flex;
-    max-width: 1000px;
     width: 100%;
+    max-width: 800px;
     gap: 40px;
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    justify-content: center; /* Добавляем центрирование */
+    align-items: center; /* Центрируем по вертикали */
 }
 
 .auth-card {
     flex: 1;
+    max-width: 800px; /* Ограничиваем максимальную ширину */
     background: rgba(15, 15, 35, 0.95);
     border-radius: 20px;
     padding: 40px;
@@ -70,6 +61,7 @@ body::before {
 .auth-header {
     text-align: center;
     margin-bottom: 30px;
+
 }
 
 .auth-icon {
@@ -449,4 +441,45 @@ body::before {
     .auth-card {
         padding: 25px;
     }
+}
+
+.form-select optgroup {
+    font-weight: 600;
+    color: #00ff88;
+    background: rgba(15, 15, 35, 0.9);
+}
+
+.form-select option {
+    padding: 8px 12px;
+    color: #b8f2ff;
+    background: rgba(15, 15, 35, 0.9);
+}
+
+.form-select option:hover {
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.specializations-preview {
+    background: rgba(0, 255, 136, 0.05);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.selected-spec-info {
+    color: #ffffff;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.selected-spec-info span {
+    color: #00ff88;
+    font-weight: 600;
+}
+
+#selected-role {
+    color: #00d4ff;
 }

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-icon" style="border-color: rgba(255, 107, 107, 0.3); color: #ff6b6b;">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+                <h2>Удаление аккаунта</h2>
+                <p class="auth-subtitle">Это действие необратимо</p>
+            </div>
+
+            <div class="auth-alert error">
+                <i class="bi bi-exclamation-diamond"></i>
+                <div>
+                    <strong>Внимание!</strong> Удаление аккаунта приведет к:
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li>Безвозвратному удалению всех ваших данных</li>
+                        <li>Удалению всех ваших персонажей</li>
+                        <li>Невозможности восстановления аккаунта</li>
+                    </ul>
+                </div>
+            </div>
+
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div class="form-group">
+                    {% if field.field.widget.input_type == 'checkbox' %}
+                    <div class="form-check">
+                        {{ field }}
+                        <label for="{{ field.id_for_label }}" class="form-check-label">
+                            {{ field.label }}
+                        </label>
+                    </div>
+                    {% else %}
+                    <label for="{{ field.id_for_label }}" class="form-label">
+                        <i class="bi 
+                            {% if field.name == 'password' %}bi-key{% endif %}
+                        "></i>
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% endif %}
+                    
+                    {% if field.errors %}
+                        <div class="form-error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="form-actions">
+                    <a href="{% url 'users:profile' %}" class="auth-btn secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        Отмена
+                    </a>
+                    <button type="submit" class="auth-btn danger">
+                        <i class="bi bi-trash"></i>
+                        Удалить аккаунт
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

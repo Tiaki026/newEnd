@@ -150,12 +150,16 @@
                         <div class="form-group">
                             <label class="form-label">Специализация</label>
                             <select name="character_specialization" class="form-select">
-                                <option value="">Выберите специализацию</option>
-                                <!-- Опции будут из базы -->
-                                <option value="tank">Танк</option>
-                                <option value="healer">Лекарь</option>
-                                <option value="dps">Боец</option>
+                            <option value="">Выберите специализацию</option>
+                            {% for spec in specializations %}
+                            <option value="{{ spec.id }}" 
+                                    data-class="{{ spec.character_class.get_name_display }}"
+                                    data-role="{{ spec.get_role_display }}">
+                                {{ spec.character_class.get_name_display }} - {{ spec.name }} ({{ spec.get_role_display }})
+                            </option>
+                            {% endfor %}
                             </select>
+                            
                         </div>
                         
                         <div class="form-check">
@@ -181,27 +185,3 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-// Опциональный блок персонажа
-document.addEventListener('DOMContentLoaded', function() {
-    const characterSection = document.getElementById('character-section');
-    const characterToggle = document.createElement('button');
-    
-    characterToggle.type = 'button';
-    characterToggle.className = 'toggle-btn secondary';
-    characterToggle.innerHTML = '<i class="bi bi-plus-lg"></i> Создать персонажа сейчас';
-    
-    characterToggle.addEventListener('click', function() {
-        characterSection.classList.toggle('active');
-        this.innerHTML = characterSection.classList.contains('active') 
-            ? '<i class="bi bi-dash-lg"></i> Скрыть создание персонажа'
-            : '<i class="bi bi-plus-lg"></i> Создать персонажа сейчас';
-    });
-    
-    // Вставляем перед блоком персонажа
-    characterSection.parentNode.insertBefore(characterToggle, characterSection);
-    characterSection.classList.add('collapsed');
-});
-</script>
-{% endblock %}

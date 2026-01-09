@@ -1,0 +1,439 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link href="{% static 'css/profile.css' %}" rel="stylesheet">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<div class="profile-container">
+    <div class="profile-wrapper">
+        <!-- Боковая панель профиля -->
+        <div class="profile-sidebar">
+            <!-- Аватар и основная информация -->
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <div class="avatar-placeholder">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    {% if user.first_name %}
+                    <h3 class="profile-name">{{ user.first_name }}</h3>
+                    {% else %}
+                    <h3 class="profile-name">{{ user.username }}</h3>
+                    {% endif %}
+                    <p class="profile-username">@{{ user.username }}</p>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ characters_count|default:"0" }}</div>
+                        <div class="stat-label">Персонажей</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{{ main_character_name|default:"Нет" }}</div>
+                        <div class="stat-label">Основной</div>
+                    </div>
+                </div>
+                
+                <div class="profile-info">
+                    <div class="info-item">
+                        <i class="bi bi-envelope"></i>
+                        <span>{{ user.email|default:"Не указан" }}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="bi bi-calendar"></i>
+                        <span>Зарегистрирован: {{ user.date_joined|date:"d.m.Y" }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Навигация -->
+            <nav class="profile-nav">
+                <ul>
+                    <li>
+                        <a href="#characters" class="nav-link active" data-tab="characters">
+                            <i class="bi bi-people"></i>
+                            <span>Мои персонажи</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#create-character" class="nav-link" data-tab="create-character">
+                            <i class="bi bi-plus-circle"></i>
+                            <span>Создать персонажа</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#settings" class="nav-link" data-tab="settings">
+                            <i class="bi bi-gear"></i>
+                            <span>Настройки</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'users:password_change_form' %}" class="nav-link">
+                            <i class="bi bi-key"></i>
+                            <span>Сменить пароль</span>
+                        </a>
+                    </li>
+                    <li>
+                        <form method="post" action="{% url 'users:logout' %}" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link logout-btn">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Выйти</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Основное содержание -->
+        <div class="profile-content">
+            <!-- Вкладка "Мои персонажи" -->
+            <div id="characters-tab" class="content-tab active">
+                <div class="tab-header">
+                    <h2><i class="bi bi-people"></i> Мои персонажи</h2>
+                    <p>Управляйте своими персонажами в END</p>
+                </div>
+                
+                {% if characters %}
+                <div class="characters-grid">
+                    {% for character in characters %}
+                    <div class="character-card {% if character.is_main %}main-character{% endif %}">
+                        <div class="character-header">
+                            <h3 class="character-name">{{ character.name }}</h3>
+                            {% if character.is_main %}
+                            <span class="main-badge">
+                                <i class="bi bi-star-fill"></i> Основной
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="character-body">
+                            <div class="character-info">
+                                <div class="info-row">
+                                    <span class="info-label">Класс:</span>
+                                    <span class="info-value">{{ character.character_class.get_name_display }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Специализация:</span>
+                                    <span class="info-value">{{ character.specialization.name }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Роль:</span>
+                                    <span class="info-value role-{{ character.specialization.role }}">
+                                        {{ character.specialization.get_role_display }}
+                                    </span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Уровень предметов:</span>
+                                    <span class="info-value">{{ character.item_level }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Создан:</span>
+                                    <span class="info-value">{{ character.created_at|date:"d.m.Y" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="character-footer">
+                            <div class="character-actions">
+                                {% if not character.is_main %}
+                                <form method="post" action="{% url 'characters:set_main' character.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-action set-main" title="Сделать основным">
+                                        <i class="bi bi-star"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                                <a href="{% url 'characters:edit' character.id %}" class="btn-action edit" title="Редактировать">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form method="post" action="{% url 'characters:delete' character.id %}" class="d-inline" 
+                                      onsubmit="return confirm('Удалить персонажа {{ character.name }}?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-action delete" title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h3>У вас пока нет персонажей</h3>
+                    <p>Создайте своего первого персонажа, чтобы начать игру!</p>
+                    <button class="auth-btn success" onclick="showTab('create-character')">
+                        <i class="bi bi-plus-circle"></i>
+                        Создать первого персонажа
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Вкладка "Создать персонажа" -->
+            <div id="create-character-tab" class="content-tab">
+                <div class="tab-header">
+                    <h2><i class="bi bi-plus-circle"></i> Создание персонажа</h2>
+                    <p>Создайте нового персонажа для приключений в END</p>
+                </div>
+                
+                <div class="create-character-form">
+                    <form method="post" action="{% url 'characters:create' %}">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="auth-alert error">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <div>
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <p>{{ field.label }}: {{ error }}</p>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id_name" class="form-label">
+                                    <i class="bi bi-person-badge"></i>
+                                    Имя персонажа *
+                                </label>
+                                <input type="text" 
+                                       name="name" 
+                                       id="id_name" 
+                                       class="form-input" 
+                                       required
+                                       placeholder="Введите имя персонажа"
+                                       maxlength="16"
+                                       value="{{ form.name.value|default:'' }}">
+                                <small class="form-help">2-16 символов</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id_specialization" class="form-label">
+                                    <i class="bi bi-stars"></i>
+                                    Специализация *
+                                </label>
+                                <select name="specialization" 
+                                        id="id_specialization" 
+                                        class="form-select" 
+                                        required>
+                                    <option value="">Выберите специализацию</option>
+                                    {% regroup specializations by character_class as class_list %}
+                                    {% for class in class_list %}
+                                    <optgroup label="{{ class.grouper.get_name_display }}">
+                                        {% for spec in class.list %}
+                                        <option value="{{ spec.id }}"
+                                                {% if form.specialization.value == spec.id %}selected{% endif %}>
+                                            {{ spec.name }} ({{ spec.get_role_display }})
+                                        </option>
+                                        {% endfor %}
+                                    </optgroup>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id_item_level" class="form-label">
+                                    <i class="bi bi-graph-up"></i>
+                                    Уровень предметов
+                                </label>
+                                <input type="number" 
+                                       name="item_level" 
+                                       id="id_item_level" 
+                                       class="form-input" 
+                                       min="600"
+                                       value="{{ form.item_level.value|default:'600' }}">
+                                <small class="form-help">Минимальный уровень: 600</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input type="checkbox" 
+                                   name="is_main" 
+                                   id="id_is_main" 
+                                   class="form-checkbox" 
+                                   {% if not characters %}checked{% endif %}>
+                            <label for="id_is_main" class="form-check-label">
+                                Сделать основным персонажем
+                            </label>
+                            <small class="form-help">Если это ваш первый персонаж, он автоматически станет основным</small>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="auth-btn secondary" onclick="showTab('characters')">
+                                <i class="bi bi-arrow-left"></i>
+                                Назад к списку
+                            </button>
+                            <button type="submit" class="auth-btn success">
+                                <i class="bi bi-check-circle"></i>
+                                Создать персонажа
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Вкладка "Настройки" -->
+            <div id="settings-tab" class="content-tab">
+                <div class="tab-header">
+                    <h2><i class="bi bi-gear"></i> Настройки профиля</h2>
+                    <p>Управление настройками вашего аккаунта</p>
+                </div>
+                
+                <div class="settings-sections">
+                    <!-- Личная информация -->
+                    <div class="settings-section">
+                        <h3><i class="bi bi-person"></i> Личная информация</h3>
+                        <form method="post" action="{% url 'users:update_profile' %}">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Имя</label>
+                                    <input type="text" 
+                                           name="first_name" 
+                                           class="form-input" 
+                                           value="{{ user.first_name|default:'' }}"
+                                           placeholder="Ваше имя">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" 
+                                           name="email" 
+                                           class="form-input" 
+                                           value="{{ user.email|default:'' }}"
+                                           required>
+                                </div>
+                            </div>
+                            <button type="submit" class="auth-btn primary">
+                                <i class="bi bi-save"></i>
+                                Сохранить изменения
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Безопасность -->
+                    <div class="settings-section">
+                        <h3><i class="bi bi-shield-check"></i> Безопасность</h3>
+                        <div class="security-options">
+                            <a href="{% url 'users:password_change_form' %}" class="security-option">
+                                <div class="option-icon">
+                                    <i class="bi bi-key"></i>
+                                </div>
+                                <div class="option-content">
+                                    <h4>Сменить пароль</h4>
+                                    <p>Обновите пароль вашего аккаунта</p>
+                                </div>
+                                <div class="option-arrow">
+                                    <i class="bi bi-chevron-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Аккаунт -->
+                    <div class="settings-section">
+                        <h3><i class="bi bi-person-x"></i> Аккаунт</h3>
+                        <div class="danger-zone">
+                            <h4><i class="bi bi-exclamation-triangle"></i> Опасная зона</h4>
+                            <p>Удаление аккаунта необратимо. Все ваши данные будут безвозвратно удалены.</p>
+                            <button type="button" class="auth-btn danger" onclick="confirmDelete()">
+                                <i class="bi bi-trash"></i>
+                                Удалить аккаунт
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для подтверждения удаления -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="bi bi-exclamation-triangle"></i> Подтверждение удаления</h3>
+        </div>
+        <div class="modal-body">
+            <p>Вы уверены, что хотите удалить свой аккаунт? Это действие невозможно отменить.</p>
+            <p>Все ваши персонажи и данные будут безвозвратно удалены.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="auth-btn secondary" onclick="closeModal()">Отмена</button>
+            <form method="post" action="{% url 'users:delete_account' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="auth-btn danger">Удалить аккаунт</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+// Переключение вкладок
+function showTab(tabName) {
+    // Скрыть все вкладки
+    document.querySelectorAll('.content-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Убрать активный класс со всех ссылок
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Показать выбранную вкладку
+    document.getElementById(`${tabName}-tab`).classList.add('active');
+    
+    // Активировать соответствующую ссылку
+    document.querySelector(`.nav-link[data-tab="${tabName}"]`).classList.add('active');
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработка кликов по навигации
+    document.querySelectorAll('.nav-link[data-tab]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabName = this.dataset.tab;
+            showTab(tabName);
+        });
+    });
+    
+    // Обработка hash в URL
+    if (window.location.hash) {
+        const tabName = window.location.hash.substring(1);
+        if (document.getElementById(`${tabName}-tab`)) {
+            showTab(tabName);
+        }
+    }
+});
+
+// Модальное окно удаления
+function confirmDelete() {
+    document.getElementById('deleteModal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('deleteModal').classList.remove('active');
+}
+
+// Закрытие модального окна при клике вне его
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('deleteModal');
+    if (modal.classList.contains('active') && e.target === modal) {
+        closeModal();
+    }
+});
+</script>
+{% endblock %}

@@ -30,7 +30,8 @@ urlpatterns = [
         'login/',
         LoginView.as_view(
             template_name='users/login.html',
-            extra_context={'title': 'Вход | END'}
+            extra_context={'title': 'Вход | END'},
+            next_page='index'
         ),
         name='login'
     ),
@@ -82,4 +83,11 @@ urlpatterns = [
         ),
         name='password_reset_confirm'
     ),
+    path('profile/', views.profile, name='profile'),
+
+    # Обновление профиля
+    path('profile/update/', views.update_profile, name='update_profile'),
+
+    # Удаление аккаунта
+    path('profile/delete/', views.delete_account, name='delete_account'),
 ]

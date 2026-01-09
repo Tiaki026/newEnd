@@ -11,7 +11,9 @@
                     <i class="bi bi-shield-lock"></i>
                 </div>
                 <h2>Вход в END</h2>
-                <p class="auth-subtitle">Войдите в свой аккаунт, чтобы продолжить</p>
+                <p class="auth-subtitle">
+                    Войдите, чтобы создавать персонажей, присоединяться к группам и участвовать в рейдах
+                </p>
             </div>
 
             <!-- Сообщения об ошибках -->
@@ -90,16 +92,6 @@
                     <p>Нет аккаунта? <a href="{% url 'users:signup' %}" class="auth-link">Присоединиться к END</a></p>
                 </div>
             </form>
-        </div>
-
-        <!-- Декоративный элемент -->
-        <div class="auth-decoration">
-            <div class="decoration-icon">
-                <i class="bi bi-dice-5"></i>
-            </div>
-            <p class="decoration-text">
-                Войдите, чтобы создавать персонажей, присоединяться к группам и участвовать в рейдах
-            </p>
         </div>
     </div>
 </div>
