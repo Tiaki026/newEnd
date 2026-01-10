@@ -33,3 +33,7 @@ class MainCharacterMixin:
             )
 
         super().save(*args, **kwargs)
+
+
+
+

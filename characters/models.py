@@ -1,6 +1,6 @@
-from django.db import models
-from django.core.validators import MinValueValidator
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator
+from django.db import models
 from django.db.models import Q
 
 from .constants import CLASSES_CHOICES, ROLE_CHOICES
@@ -56,7 +56,9 @@ class UserCharacter(CharacterClassMixin, MainCharacterMixin, models.Model):
     """Персонаж пользователя."""
 
     name = models.CharField(
-        max_length=16, verbose_name="Имя персонажа", help_text="2-16 символов"
+        max_length=16,
+        verbose_name="Имя персонажа",
+        help_text="2-16 символов",
     )
     user = models.ForeignKey(
         User,
@@ -78,10 +80,12 @@ class UserCharacter(CharacterClassMixin, MainCharacterMixin, models.Model):
         verbose_name="Уровень предметов",
     )
     is_main = models.BooleanField(
-        default=False, verbose_name="Основной персонаж"
+        default=False,
+        verbose_name="Основной персонаж",
     )
     created_at = models.DateTimeField(
-        auto_now_add=True, verbose_name="Дата создания"
+        auto_now_add=True,
+        verbose_name="Дата создания",
     )
 
     class Meta:
@@ -94,8 +98,17 @@ class UserCharacter(CharacterClassMixin, MainCharacterMixin, models.Model):
                 fields=["user"],
                 condition=Q(is_main=True),
                 name="unique_main_character_per_user",
-            )
+            ),
         ]
 
     def __str__(self) -> str:
-        return f"{self.name} ({self.specialization.character_class.get_name_display()})"
+        return f"{self.name} ({
+            self.specialization.character_class.get_name_display()
+        })"
+
+
+very_long_variable_name = (
+    "Это очень длинная строка, которая точно превышает 79 символов и должна "
+    "быть разбита на несколько строк автоматически при "
+    "форматировании"
+)

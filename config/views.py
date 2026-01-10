@@ -34,9 +34,9 @@ def permission_denied(request, exception):
     return render(request, "includes/403.html", context, status=403)
 
 
-def csrf_failure(request, reason=''):
+def csrf_failure(request, reason=""):
     """CSRF 403."""
     context = {
         "title": "Ошибка безопасности | END",
     }
-    return render(request, 'includes/403csrf.html', context)
+    return render(request, "includes/403csrf.html", context)

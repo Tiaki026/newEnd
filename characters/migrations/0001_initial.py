@@ -68,7 +68,12 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("name", models.CharField(max_length=50, verbose_name="Специализация")),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=50, verbose_name="Специализация"
+                    ),
+                ),
                 (
                     "role",
                     models.CharField(
@@ -122,7 +127,9 @@ class Migration(migrations.Migration):
                     "item_level",
                     models.IntegerField(
                         default=600,
-                        validators=[django.core.validators.MinValueValidator(600)],
+                        validators=[
+                            django.core.validators.MinValueValidator(600)
+                        ],
                         verbose_name="Уровень предметов",
                     ),
                 ),

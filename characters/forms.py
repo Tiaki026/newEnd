@@ -1,12 +1,12 @@
-# characters/forms.py
 from django import forms
+
 from .models import UserCharacter
 
 
 class UserCharacterForm(forms.ModelForm):
     class Meta:
         model = UserCharacter
-        fields = ["name", "specialization", "item_level", "is_main"]
+        fields = ["name", "specialization", "is_main"]
         widgets = {
             "name": forms.TextInput(
                 attrs={
@@ -20,13 +20,6 @@ class UserCharacterForm(forms.ModelForm):
                 attrs={
                     "class": "form-select",
                     "id": "id_specialization",
-                }
-            ),
-            "item_level": forms.NumberInput(
-                attrs={
-                    "class": "form-control",
-                    "min": "600",
-                    "step": "1",
                 }
             ),
             "is_main": forms.CheckboxInput(
