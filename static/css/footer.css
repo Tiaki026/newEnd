@@ -31,10 +31,11 @@ footer {
     border-top: 1px solid rgba(0, 255, 136, 0.18);
     margin-top: auto; /* Ключевое свойство - прижимает к низу */
     flex-shrink: 0; /* Не сжимается */
+    z-index: 15;
 }
 
 footer p {
-    color: white;
+    color: rgb(2, 255, 2);
     text-align: center;
     margin: 0;
     line-height: 40px;

@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block content %}
 {% comment %} <link href="{% static 'css/style.css' %}" rel="stylesheet"> {% endcomment %}
 <link href="{% static 'css/profile.css' %}" rel="stylesheet">
@@ -81,9 +80,6 @@
         
         <!-- Основное содержание -->
         <div class="profile-content">
-            <div class="tab-header">
-                <h2><i class="bi bi-person-circle"></i> Профиль {{ user.first_name|default:user.username }}</h2>
-            </div>
             <div id="profile-main-content">
                 {% if characters %}
                 {% include 'characters/list.html' %}

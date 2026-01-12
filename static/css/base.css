@@ -35,7 +35,8 @@ body::before {
     margin-left: auto;
     margin-right: auto;
     padding: 30px;
-    border: 1px solid rgba(0, 255, 136, 0.34);
+    border-left: 1px solid rgba(0, 255, 136, 0.34);
+    border-right: 1px solid rgba(0, 255, 136, 0.34);
     box-shadow: 
         0 15px 35px rgb(0, 0, 0),
         0 0 30px rgba(0, 255, 136, 0.676);

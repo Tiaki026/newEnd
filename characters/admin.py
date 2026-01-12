@@ -1,5 +1,6 @@
-from django.contrib import admin
 from django import forms
+from django.contrib import admin
+
 from .models import Specialization, UserCharacter
 
 
@@ -11,13 +12,13 @@ class UserCharacterAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.pk:
-            self.fields["specialization"].queryset = (
-                Specialization.objects.all()
-            )
+            self.fields[
+                "specialization"
+            ].queryset = Specialization.objects.all()
         elif not self.instance.pk:
-            self.fields["specialization"].queryset = (
-                Specialization.objects.all()
-            )
+            self.fields[
+                "specialization"
+            ].queryset = Specialization.objects.all()
 
 
 @admin.register(UserCharacter)
@@ -29,7 +30,6 @@ class UserCharacterAdmin(admin.ModelAdmin):
         "get_class",
         "get_spec",
         "get_role",
-        "item_level",
         "is_main",
         "created_at",
     )
@@ -39,7 +39,7 @@ class UserCharacterAdmin(admin.ModelAdmin):
         "is_main",
     )
     search_fields = ("name", "user__username", "specialization__name")
-    list_editable = ("is_main", "item_level")
+    list_editable = ("is_main",)
     readonly_fields = ("created_at", "get_class_display")
 
     fieldsets = (
@@ -48,10 +48,10 @@ class UserCharacterAdmin(admin.ModelAdmin):
             "Специализация",
             {
                 "fields": ("specialization",),
-                "description": "При выборе специализации класс определится автоматически",
+                "description": "При выборе специализации класс определится "
+                "автоматически",
             },
         ),
-        ("Характеристики", {"fields": ("item_level",)}),
         ("Дата", {"fields": ("created_at",)}),
     )
 

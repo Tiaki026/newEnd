@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Q
 
@@ -74,11 +73,6 @@ class UserCharacter(CharacterClassMixin, MainCharacterMixin, models.Model):
         related_name="characters",
         verbose_name="Специализация",
     )
-    item_level = models.IntegerField(
-        default=600,
-        validators=[MinValueValidator(600)],
-        verbose_name="Уровень предметов",
-    )
     is_main = models.BooleanField(
         default=False,
         verbose_name="Основной персонаж",
@@ -105,10 +99,3 @@ class UserCharacter(CharacterClassMixin, MainCharacterMixin, models.Model):
         return f"{self.name} ({
             self.specialization.character_class.get_name_display()
         })"
-
-
-very_long_variable_name = (
-    "Это очень длинная строка, которая точно превышает 79 символов и должна "
-    "быть разбита на несколько строк автоматически при "
-    "форматировании"
-)

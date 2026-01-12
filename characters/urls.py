@@ -5,7 +5,7 @@ from . import views
 app_name = "characters"
 
 urlpatterns = [
-    path("", views.character_list, name="list"),  # Убрал слэш в начале
+    path("", views.character_list, name="list"),
     path("create/", views.character_create, name="create"),
     path("<int:pk>/edit/", views.character_edit, name="edit"),
     path("<int:pk>/delete/", views.character_delete, name="delete"),
