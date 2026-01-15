@@ -1,9 +1,7 @@
-/* static/css/base.css - БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ СТРАНИЦ */
-
-/* ===== ОБЩИЕ СТИЛИ ===== */
 body {
-    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%) no-repeat center center;
     background-attachment: fixed;
+    background-size: cover;
     overflow-y: auto;
     margin: 0;
     padding: 0;

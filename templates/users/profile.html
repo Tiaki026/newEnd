@@ -1,13 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-{% comment %} <link href="{% static 'css/style.css' %}" rel="stylesheet"> {% endcomment %}
-<link href="{% static 'css/profile.css' %}" rel="stylesheet">
 <div class="profile-container">
     <div class="profile-wrapper">
-        <!-- Боковая панель профиля -->
         <div class="profile-sidebar">
-            <!-- Аватар и основная информация -->
             <div class="profile-card">
                 <div class="profile-avatar">
                     <div class="avatar-placeholder">
@@ -20,22 +16,29 @@
                     {% endif %}
                     <p class="profile-username">@{{ user.username }}</p>
                 </div>
-                
-                <div class="profile-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">{{ characters_count|default:"0" }}</div>
-                        <div class="stat-label">Персонажей</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">{{ main_character_name|default:"Нет" }}</div>
-                        <div class="stat-label">Основной</div>
+
+                <div class="profile-divider"></div>
+
+                <div class="stat-label characters-count">
+                    Персонажей: <span class="count">{{ characters_count|default:"0" }}</span>
+                </div>
+
+                <div class="profile-divider"></div>
+
+                <div class="stat-label"><span class="main-badge">Основной</span>
+                    <div class="stat-number">
+                        {{ main_character_name|default:"Нет" }}<br>
+                        {{ main_character_class|default:"Класс" }} -
+                        {{ main_specialization_name |default:"Специализация" }}
                     </div>
                 </div>
-                
+
+                <div class="profile-divider"></div>
+
                 <div class="profile-info">
                     <div class="info-item">
                         <i class="bi bi-envelope"></i>
-                        <span>{{ user.email|default:"Не указан" }}</span>
+                        <span>email: {{ user.email|default:"Не указан" }}</span>
                     </div>
                     <div class="info-item">
                         <i class="bi bi-calendar"></i>
@@ -43,8 +46,7 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Навигация -->
+
             <nav class="profile-nav">
                 <ul>
                     <li>
@@ -77,56 +79,84 @@
                 </ul>
             </nav>
         </div>
-        
-        <!-- Основное содержание -->
+
         <div class="profile-content">
             <div id="profile-main-content">
-                {% if characters %}
-                {% include 'characters/list.html' %}
-                {{ elif }}
-                {% include 'characters/create.html' %}
-                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
 <script>
-// JavaScript для динамической загрузки контента
 document.addEventListener('DOMContentLoaded', function() {
-    // Обработка кликов по навигации
+    // Функция для загрузки контента
+    function loadContent(url, elementToActivate = null) {
+        fetch(url + (url.includes('?') ? '&' : '?') + 'partial=true')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('profile-main-content').innerHTML = html;
+                
+                // Если контент загружен по клику на навигацию
+                if (elementToActivate) {
+                    document.querySelectorAll('.profile-nav .nav-link').forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    elementToActivate.classList.add('active');
+                }
+                
+                // Добавляем обработчики для ссылок редактирования внутри загруженного контента
+                attachEditLinksHandlers();
+                
+                document.getElementById('profile-main-content').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            })
+            .catch(error => {
+                console.error('Error loading content:', error);
+                window.location.href = url;
+            });
+    }
+    
+    // Обработчик для ссылок редактирования
+    function handleEditLinkClick(e) {
+        e.preventDefault();
+        const url = this.getAttribute('href');
+        loadContent(url);
+    }
+    
+    // Привязка обработчиков к ссылкам редактирования
+    function attachEditLinksHandlers() {
+        document.querySelectorAll('.profile-edit-link').forEach(link => {
+            // Удаляем старые обработчики
+            link.removeEventListener('click', handleEditLinkClick);
+            // Добавляем новые
+            link.addEventListener('click', handleEditLinkClick);
+        });
+    }
+    
+    // Навигация профиля
     document.querySelectorAll('.profile-nav a[href]').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const url = this.getAttribute('href');
-            
-            // Загружаем контент без перезагрузки страницы
-            fetch(url + '?partial=true')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('profile-main-content').innerHTML = html;
-                    
-                    // Обновляем активную ссылку
-                    document.querySelectorAll('.profile-nav .nav-link').forEach(navLink => {
-                        navLink.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                    
-                    // Прокручиваем к верху контента
-                    document.getElementById('profile-main-content').scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                })
-                .catch(error => {
-                    console.error('Error loading content:', error);
-                    // В случае ошибки переходим по ссылке обычным способом
-                    window.location.href = url;
-                });
+            loadContent(url, this);
         });
     });
     
-    // Инициализация - делаем активной первую ссылку
-    document.querySelector('.profile-nav a[href]').classList.add('active');
+    // Инициализация
+    attachEditLinksHandlers();
+    
+    // Автоматически загружаем первый пункт навигации при загрузке страницы
+    const firstNavLink = document.querySelector('.profile-nav a[href]');
+    if (firstNavLink && !window.location.hash) {
+        const url = firstNavLink.getAttribute('href');
+        loadContent(url, firstNavLink);
+    }
 });
 </script>
 {% endblock %}

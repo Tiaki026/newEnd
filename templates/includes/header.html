@@ -4,7 +4,6 @@
 {% block header %}
 <nav class="navbar">
     <div class="navbar-left-container">
-        <!-- Контейнер 1: Логотип и название -->
         <div class="navbar-brand-container">
             <a class="navbar-brand" href="{% url 'index' %}">
                 <img src="{% static 'img/logo_1.png' %}" alt="">
@@ -13,7 +12,6 @@
         </div>
     </div>
 
-    <!-- Контейнер для всего остального -->
     <div class="navbar-center-container">
         <!-- Контейнер 2: Навигация (пока пустой, будет позже) -->
         <div class="navbar-nav-center">
@@ -21,10 +19,8 @@
         </div>
     </div>
 
-    <!-- Контейнеры 3 и 4: Пользователь и выход -->
     <div class="navbar-rightn-container">
         {% if user.is_authenticated %}
-            <!-- Контейнер 3: Пользователь (ссылка на профиль) -->
         <div class="container-user">
             <a href="{% url 'users:profile' %}" class="nav-user-link">
                 <i class="bi bi-person-circle me-2"></i>
@@ -42,15 +38,6 @@
                 </button>
             </form>
         </div>
-        {% comment %} {% else %}
-        <!-- Для неавторизованных -->
-        <div class="container-auth">
-            <a href="{% url 'users:login' %}" class="nav-login-btn">
-                <i class="bi bi-box-arrow-in-right me-2"></i>
-                <span>Стань частью END</span>
-                <span class="gamepad-icon">🎮</span>
-            </a>
-        </div> {% endcomment %}
         {% endif %}
     </div>
 </nav>

@@ -63,6 +63,14 @@ def profile(request):
             main_character.name if main_character else "Нет"
         ),
         "specializations": specializations,
+        "main_character_class": (
+            main_character.specialization.character_class.get_name_display()
+            if main_character
+            else None
+        ),
+        "main_specialization_name": main_character.specialization.name
+        if main_character
+        else None,
         "profile_form": profile_form,
         "title": f"Профиль | {request.user.username}",
     }

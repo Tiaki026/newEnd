@@ -1,27 +1,27 @@
-{% extends "base.html" %}
 {% load static %}
 {% block content %}
-<link href="{% static 'css/style.css' %}" rel="stylesheet">
 <div class="auth-container">
     <div class="auth-wrapper">
         <div class="auth-card">
             <!-- Заголовок -->
             <div class="auth-header">
                 <h2>Создание персонажа</h2>
-                <p class="auth-subtitle">Создайте нового персонажа для приключений в END</p>
             </div>
 
+            {% load user_filters %}
             {% if form.errors %}
-            <div class="auth-alert error">
-                <i class="bi bi-exclamation-triangle"></i>
-                <div>
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <p>{{ field.label }}: {{ error }}</p>
-                        {% endfor %}
+                {% for field in form %}
+                    {% for error in field.errors %}            
+                    <div class="alert alert-danger">
+                        {{ error|escape }}
+                    </div>
                     {% endfor %}
-                </div>
-            </div>
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                    {{ error|escape }}
+                    </div>
+                {% endfor %}
             {% endif %}
 
             <!-- Форма создания персонажа -->
@@ -29,62 +29,34 @@
                 {% csrf_token %}
                 
                 <div class="form-group">
-                    <label for="id_name" class="form-label">
-                        <i class="bi bi-person-badge"></i>
-                        Имя персонажа *
-                    </label>
-                    <input type="text" 
-                           name="name" 
-                           id="id_name" 
-                           class="form-input" 
-                           required
-                           placeholder="Введите имя персонажа"
-                           maxlength="16"
-                           value="{{ form.name.value|default:'' }}">
-                    <small class="form-help">2-16 символов</small>
-                </div>
-                <div class="form-group">
-                    <label for="id_specialization" class="form-label">
-                        <i class="bi bi-stars"></i>
-                        Специализация *
-                    </label>
-                    <select name="specialization" 
-                            id="id_specialization" 
-                            class="form-select" 
-                            required>
-                        <option value="">Выберите специализацию</option>
-                        {% regroup specializations by character_class as class_list %}
-                        {% for class in class_list %}
-                        <optgroup label="{{ class.grouper.get_name_display }}">
-                            {% for spec in class.list %}
-                            <option value="{{ spec.id }}"
-                                    {% if form.specialization.value == spec.id %}selected{% endif %}>
-                                {{ spec.name }} ({{ spec.get_role_display }})
-                            </option>
-                            {% endfor %}
-                        </optgroup>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" 
-                           name="is_main" 
-                           id="id_is_main" 
-                           class="form-checkbox" 
-                           {% if not characters_exists %}checked{% endif %}>
-                    <label for="id_is_main" class="form-check-label">
-                        Сделать основным персонажем
-                    </label>
-                    <small class="form-help">
-                        {% if characters_exists %}
-                            Если отметить, этот персонаж станет вашим основным
+                {% for field in form %}
+                    <div class="form-group row my-3"
+                        {% if field.field.required %} 
+                            aria-required="true"
                         {% else %}
-                            Ваш первый персонаж автоматически станет основным
+                            aria-required="false"
                         {% endif %}
-                    </small>
+                        >
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            {% if field.field.required %}
+                                <span class="required text-danger">*</span>
+                            {% endif %}
+                        </label>
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                {{ field|addclass:'form-control' }}
+                                {% if field.help_text %}
+                                <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
+                                    {{ field.help_text|safe }}
+                                </small>
+                                {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="auth-btn success">
+                    <button type="submit" class="auth-btn primary">
                         <i class="bi bi-check-circle"></i>
                         Создать персонажа
                     </button>

@@ -3,7 +3,6 @@ from django.db import models
 from django.db.models import Q
 
 from .constants import CLASSES_CHOICES, ROLE_CHOICES
-from .mixins import CharacterClassMixin, MainCharacterMixin
 
 User = get_user_model()
 
@@ -51,7 +50,7 @@ class Specialization(models.Model):
         return f"{self.name} ({self.character_class.get_name_display()})"
 
 
-class UserCharacter(CharacterClassMixin, MainCharacterMixin, models.Model):
+class UserCharacter(models.Model):
     """Персонаж пользователя."""
 
     name = models.CharField(
@@ -92,6 +91,10 @@ class UserCharacter(CharacterClassMixin, MainCharacterMixin, models.Model):
                 fields=["user"],
                 condition=Q(is_main=True),
                 name="unique_main_character_per_user",
+            ),
+            models.UniqueConstraint(
+                fields=["user", "name"],
+                name="unique_character_name_per_user",
             ),
         ]
 

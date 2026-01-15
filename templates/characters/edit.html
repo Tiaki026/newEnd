@@ -1,92 +1,127 @@
-{% extends "base.html" %}
 {% load static %}
-{% block title %}Редактирование персонажа{% endblock %}
-
 {% block content %}
-<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<link href="{% static 'css/auth.css' %}" rel="stylesheet">
 <div class="auth-container">
-    <div class="auth-wrapper">
+    <div class="auth-signup">
         <div class="auth-card">
             <!-- Заголовок -->
             <div class="auth-header">
-                <div class="auth-icon">
-                    <i class="bi bi-pencil"></i>
-                </div>
-                <h2>Редактирование персонажа</h2>
-                <p class="auth-subtitle">Измените параметры персонажа {{ character.name }}</p>
+                <h2>
+                    <i class="bi bi-pencil-square"></i>
+                    Редактирование {{ character.name }}
+                </h2>
+                <p class="auth-subtitle">
+                    {{ character.name }} - 
+                    {{ character.specialization.character_class.get_name_display }} - 
+                    {{ character.specialization.name }}</p>
             </div>
 
-            {% if form.errors %}
-            <div class="auth-alert error">
-                <i class="bi bi-exclamation-triangle"></i>
-                <div>
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <p>{{ field.label }}: {{ error }}</p>
-                        {% endfor %}
-                    {% endfor %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %}">
+                    <i class="bi bi-{% if message.tags == 'error' %}exclamation-triangle{% else %}check-circle{% endif %}"></i>
+                    {{ message }}
                 </div>
-            </div>
+                {% endfor %}
             {% endif %}
 
-            <!-- Форма редактирования -->
-            <form method="post" class="auth-form">
+            {% load user_filters %}
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p><strong>{{ field.label }}:</strong> {{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'characters:edit' character.id %}" 
+                class="auth-form">
                 {% csrf_token %}
                 
                 <div class="form-group">
-                    <label for="id_name" class="form-label">
+                    <label for="id_name">
                         <i class="bi bi-person-badge"></i>
                         Имя персонажа *
                     </label>
-                    <input type="text" 
-                           name="name" 
-                           id="id_name" 
-                           class="form-input" 
-                           required
-                           placeholder="Введите имя персонажа"
-                           maxlength="16"
-                           value="{{ form.name.value|default:character.name }}">
-                    <small class="form-help">2-16 символов</small>
+                    {{ form.name }}
+                    {% if form.name.help_text %}
+                    <small class="form-help">{{ form.name.help_text }}</small>
+                    {% endif %}
+                    {% if form.name.errors %}
+                    <div class="error-text">
+                        {% for error in form.name.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <div class="char-count">
+                        <span id="nameCounter">{{ form.name.value|length|default:0 }}</span>/16 символов
+                    </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="id_item_level" class="form-label">
-                        <i class="bi bi-graph-up"></i>
-                        Уровень предметов
+                    <label for="id_specialization">
+                        <i class="bi bi-stars"></i>
+                        Специализация *
                     </label>
-                    <input type="number" 
-                           name="item_level" 
-                           id="id_item_level" 
-                           class="form-input" 
-                           min="600"
-                           value="{{ form.item_level.value|default:character.item_level }}">
-                    <small class="form-help">Минимальный уровень: 600</small>
+                    {{ form.specialization }}
+                    {% if form.specialization.errors %}
+                    <div class="error-text">
+                        {% for error in form.specialization.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
                 
-                <div class="form-check">
-                    <input type="checkbox" 
-                           name="is_main" 
-                           id="id_is_main" 
-                           class="form-checkbox" 
-                           {% if character.is_main or not characters_exists %}checked{% endif %}
-                           {% if character.is_main %}disabled{% endif %}>
-                    <label for="id_is_main" class="form-check-label">
-                        Основной персонаж
-                    </label>
-                    <small class="form-help">
+                <div class="form-group">
+                    <div class="checkbox-group">
                         {% if character.is_main %}
-                            Это ваш основной персонаж
+                            {# Если персонаж уже основной, показываем скрытое поле #}
+                            {{ form.is_main }}
+                            <label class="checkbox-label">
+                                <span class="checkbox-custom">
+                                    <i class="bi bi-star-fill"></i>
+                                </span>
+                                <span class="checkbox-text">
+                                    Это ваш основной персонаж
+                                </span>
+                            </label>
+                            <small class="form-help">
+                                Основной персонаж нельзя отменить через редактирование. 
+                                Чтобы сменить основной персонаж, выберите другого как основного в списке персонажей.
+                            </small>
                         {% else %}
-                            Сделать основным персонажем
+                            <label class="checkbox-label" for="id_is_main">
+                                {{ form.is_main }}
+                                <span class="checkbox-custom">
+                                    <i class="bi bi-star"></i>
+                                </span>
+                                <span class="checkbox-text">
+                                    Сделать основным персонажем
+                                </span>
+                            </label>
+                            {% if form.is_main.help_text %}
+                            <small class="form-help">{{ form.is_main.help_text }}</small>
+                            {% endif %}
                         {% endif %}
-                    </small>
+                    </div>
+                    {% if form.is_main.errors %}
+                    <div class="error-text">
+                        {% for error in form.is_main.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
-                
+
                 <div class="form-actions">
-                    <a href="{% url 'characters:list' %}" class="auth-btn secondary">
-                        <i class="bi bi-arrow-left"></i>
-                        Назад к списку
-                    </a>
                     <button type="submit" class="auth-btn success">
                         <i class="bi bi-check-circle"></i>
                         Сохранить изменения
@@ -96,4 +131,20 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    const nameInput = document.getElementById('id_name');
+    const nameCounter = document.getElementById('nameCounter');
+    
+    if (nameInput && nameCounter) {
+        nameInput.addEventListener('input', function() {
+            nameCounter.textContent = this.value.length;
+        });
+
+        nameCounter.textContent = nameInput.value.length;
+    }
+});
+</script>
 {% endblock %}

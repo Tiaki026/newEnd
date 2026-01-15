@@ -3,81 +3,45 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import UserCharacterForm
-from .models import Specialization, UserCharacter
+from .models import UserCharacter
 
 
 @login_required
 def character_list(request):
     """Список персонажей пользователя."""
-    characters = UserCharacter.objects.filter(
-        user=request.user
-    ).select_related("specialization", "specialization__character_class")
-
-    main_character = characters.filter(is_main=True).first()
-
-    # Определяем, из какого контекста идет запрос
-    # Если это AJAX или include, показываем только контент
-    template_name = "characters/list_full.html"  # По умолчанию полная страница
-
-    # Можно добавить логику для определения контекста
-    # Например, по параметру в запросе:
-    if request.GET.get("partial") == "true":
-        template_name = "characters/list.html"
+    characters = (
+        UserCharacter.objects.filter(user=request.user)
+        .select_related("specialization", "specialization__character_class")
+        .order_by("-is_main", "-created_at")
+    )
 
     context = {
         "characters": characters,
         "characters_count": characters.count(),
-        "main_character_name": main_character.name
-        if main_character
-        else "Нет",
         "title": "Мои персонажи",
     }
 
-    return render(request, template_name, context)
+    return render(request, "characters/list.html", context)
 
 
 @login_required
 def character_create(request):
     """Создание нового персонажа."""
-    characters_exists = UserCharacter.objects.filter(
-        user=request.user
-    ).exists()
-
     if request.method == "POST":
-        form = UserCharacterForm(request.POST)
+        form = UserCharacterForm(request.POST, user=request.user)
         if form.is_valid():
-            character = form.save(commit=False)
-            character.user = request.user
-
-            # Если это первый персонаж, делаем его основным
-            if not characters_exists:
-                character.is_main = True
-
-            character.save()
-
+            character = form.save()
             messages.success(
                 request, f"Персонаж {character.name} успешно создан!"
             )
-            return redirect("characters:list")
+            return redirect("users:profile")
     else:
-        form = UserCharacterForm()
-
-        # Если нет персонажей, отмечаем чекбокс по умолчанию
-        if not characters_exists:
-            form.fields["is_main"].initial = True
-
-    # Получаем все специализации
-    specializations = Specialization.objects.select_related(
-        "character_class"
-    ).order_by("character_class__name", "name")
+        form = UserCharacterForm(user=request.user)
 
     context = {
         "form": form,
-        "specializations": specializations,
-        "characters_exists": characters_exists,
-        "title": "Создание персонажа",
+        "title": "Создание нового персонажа",
     }
-
     return render(request, "characters/create.html", context)
 
 
@@ -87,15 +51,17 @@ def character_edit(request, pk):
     character = get_object_or_404(UserCharacter, pk=pk, user=request.user)
 
     if request.method == "POST":
-        form = UserCharacterForm(request.POST, instance=character)
+        form = UserCharacterForm(
+            request.POST, instance=character, user=request.user
+        )
         if form.is_valid():
-            form.save()
+            character = form.save()
             messages.success(
                 request, f"Персонаж {character.name} успешно обновлен!"
             )
-            return redirect("characters:list")
+            return redirect("users:profile")
     else:
-        form = UserCharacterForm(instance=character)
+        form = UserCharacterForm(instance=character, user=request.user)
 
     context = {
         "form": form,
@@ -112,11 +78,32 @@ def character_delete(request, pk):
     character = get_object_or_404(UserCharacter, pk=pk, user=request.user)
 
     if request.method == "POST":
-        character_name = character.name
-        character.delete()
-        messages.success(request, f"Персонаж {character_name} удален.")
+        # Проверяем, пытаются ли удалить основного персонажа
+        if character.is_main:
+            # Проверяем, есть ли другие персонажи
+            other_characters = UserCharacter.objects.filter(
+                user=request.user
+            ).exclude(pk=pk)
 
-    return redirect("characters:list")
+            if other_characters.exists():
+                # Есть другие персонажи - нельзя удалить основного
+                messages.error(
+                    request,
+                    f"Невозможно удалить основного персонажа {character.name}. "
+                    f"Сначала назначьте другого персонажа основным.",
+                )
+            else:
+                # Это единственный персонаж - можно удалить
+                character_name = character.name
+                character.delete()
+                messages.success(request, f"Персонаж {character_name} удален.")
+        else:
+            # Удаляем обычного персонажа
+            character_name = character.name
+            character.delete()
+            messages.success(request, f"Персонаж {character_name} удален.")
+
+    return redirect("users:profile")
 
 
 @login_required
@@ -138,4 +125,4 @@ def set_main_character(request, pk):
             request, f"{character.name} теперь ваш основной персонаж!"
         )
 
-    return redirect("characters:list")
+    return redirect("users:profile")

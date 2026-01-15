@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<link href="{% static 'css/style.css' %}" rel="stylesheet">
-
 <div class="main-container">
     <!-- Контейнер 1: Широкое поле с приветствием -->
     <div class="container-0">
@@ -59,12 +57,12 @@
             </h3>
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number">{{ user.characters.count|default:"0" }}</div>
                     <div class="stat-label">Персонажей</div>
                 </div>
 
                 <div class="stat-item">
-                    <div class="stat-number">(картинка)</div>
+                    <div class="stat-number">{{ user.characters.main.name|default:"Нет" }}</div>
                     <div class="stat-label">Основной</div>
                 </div>
 

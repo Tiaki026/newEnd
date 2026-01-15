@@ -1,5 +1,4 @@
 {% load static %}
-{% if characters %}
 <div class="profile-content">
     {% for character in characters %}
     <div class="character-card {% if character.is_main %}main-character{% endif %}">
@@ -11,15 +10,15 @@
             </span>
             {% endif %}
         </div>
-        
+        <div class="card-divider"></div>
         <div class="character-body">
             <div class="character-info">
                 <div class="info-row">
                     <span class="info-label">Класс:</span>
-                    <span class="info-value">{{ character.character_class.get_name_display }}</span>
+                    <span class="info-value">{{ character.specialization.character_class }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Специализация:</span>
+                    <span class="info-label">Спек:</span>
                     <span class="info-value">{{ character.specialization.name }}</span>
                 </div>
                 <div class="info-row">
@@ -29,16 +28,14 @@
                     </span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Уровень предметов:</span>
-                    <span class="info-value">{{ character.item_level }}</span>
-                </div>
-                <div class="info-row">
                     <span class="info-label">Создан:</span>
                     <span class="info-value">{{ character.created_at|date:"d.m.Y" }}</span>
                 </div>
             </div>
         </div>
-        
+
+        <div class="card-divider"></div>
+
         <div class="character-footer">
             <div class="character-actions">
                 {% if not character.is_main %}
@@ -49,8 +46,11 @@
                     </button>
                 </form>
                 {% endif %}
-                <a href="{% url 'characters:edit' character.id %}" class="btn-action edit" title="Редактировать">
-                    <i class="bi bi-pencil"></i>
+                <a href="{% url 'characters:edit' character.id %}" 
+                    class="btn-action edit profile-edit-link" 
+                    data-character-id="{{ character.id }}"
+                    title="Редактировать">
+                        <i class="bi bi-pencil"></i>
                 </a>
                 <form method="post" action="{% url 'characters:delete' character.id %}" class="d-inline" 
                       onsubmit="return confirm('Удалить персонажа {{ character.name }}?');">
@@ -64,12 +64,3 @@
     </div>
     {% endfor %}
 </div>
-{% else %}
-<div class="empty-state-no-button">
-    <div class="empty-icon">
-        <i class="bi bi-people"></i>
-    </div>
-    <h3>У вас пока нет персонажей</h3>
-    <p>Самое время создать первого персонажа!</p>
-</div>
-{% endif %}

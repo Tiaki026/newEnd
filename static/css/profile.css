@@ -1,30 +1,17 @@
-/* ===== ОПТИМИЗИРОВАННЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ ПРОФИЛЯ ===== */
-
-/* Основные контейнеры */
+/* Профиль - общие стили */
 .profile-container {
     min-height: calc(100vh - 200px);
-    padding: 30px 20px;
-    margin: 70px;
-    position: relative;
-    max-width: 100%;
-    max-height: 100%;
-    width: 1200px;
-}
-
-.profile-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-top: 70px;
+    width: 100%;
 }
 
 .profile-wrapper {
     display: flex;
-    max-width: 1400px;
-    margin: 60px auto;
+    width: 100%;
+    max-width: 1200px;
     gap: 30px;
     position: relative;
     z-index: 1;
@@ -85,26 +72,47 @@
     justify-content: space-around;
     margin: 25px 0;
     padding: 20px 0;
-    border-top: 1px solid rgba(0, 255, 136, 0.1);
-    border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+
 }
 
 .stat-item {
     text-align: center;
-}
-
-.stat-number {
-    color: #00ff88;
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+    min-width: 100px;
 }
 
 .stat-label {
     color: #b8f2ff;
-    font-size: 0.9rem;
-    opacity: 0.8;
+    font-size: 1rem !important;
+    font-weight: 500;
+    margin-bottom: 8px;
+    opacity: 0.9;
+    text-align: center;
+}
+
+.characters-count {
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+    font-weight: 600;
+    font-size: 1rem !important;
+    text-align: center;
+
+}
+
+.characters-count .count {
+    color: #00ff88;
+    font-weight: 700;
+    margin-left: 10px;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+}
+
+.stat-number {
+    color: #00ff88;
+    font-size: 1.1rem !important;
+    word-break: break-word;
+    max-width: 500px;
+    margin: 0 auto;
+    margin-top: 5px;
+    line-height: 1.8;
+    text-align: center;
 }
 
 /* Информационные поля */
@@ -119,12 +127,35 @@
     color: #b8f2ff;
     margin-bottom: 12px;
     font-size: 0.95rem;
+    line-height: 1.4;
 }
 
 .info-item i {
     color: #00ff88;
     font-size: 1.1rem;
     width: 20px;
+    flex-shrink: 0;
+}
+
+.info-item span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(0, 255, 136, 0.2) 20%, 
+        rgba(0, 255, 136, 0.4) 50%, 
+        rgba(0, 255, 136, 0.2) 80%, 
+        transparent 100%
+    );
 }
 
 /* Навигация профиля */
@@ -150,6 +181,8 @@
     border: 1px solid transparent;
     transition: all 0.3s ease;
     font-weight: 500;
+    width: 100%;
+    text-align: left;
 }
 
 .nav-link:hover,
@@ -163,12 +196,15 @@
 .nav-link i {
     font-size: 1.2rem;
     color: #00ff88;
+    width: 24px;
+    flex-shrink: 0;
 }
 
 /* Кнопка выхода */
 .logout-form {
     margin: 0;
     padding: 0;
+    width: 100%;
 }
 
 .logout-btn {
@@ -184,14 +220,120 @@
     align-items: center;
     gap: 15px;
     transition: all 0.3s ease;
+    text-align: left;
 }
 
 .logout-btn:hover {
     background: rgba(220, 53, 69, 0.2);
     border-color: #ff6b6b;
+    transform: translateX(5px);
 }
 
 .logout-btn i {
     color: #ff6b6b;
     font-size: 1.2rem;
+    width: 24px;
+    flex-shrink: 0;
+}
+
+/* Основное содержание профиля */
+.profile-content {
+    flex: 1;
+    min-width: 0; /* Для правильной работы flex-элементов */
+}
+
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-alert-success {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    color: #00ff88;
+}
+
+.profile-alert-danger {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    color: #ff6b6b;
+}
+
+/* Счетчик символов */
+.char-count {
+    text-align: right;
+    font-size: 0.85rem;
+    color: #b8f2ff;
+    opacity: 0.7;
+    margin-top: 5px;
+}
+
+/* Чекбокс в профиле */
+.profile-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.profile-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #b8f2ff;
+    font-size: 1rem;
+}
+
+.profile-checkbox-input {
+    width: 18px;
+    height: 18px;
+    accent-color: #00ff88;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .profile-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .profile-sidebar {
+        flex: none;
+        width: 100%;
+    }
+    
+    .profile-card {
+        margin-bottom: 15px;
+    }
+    
+    .profile-stats {
+        justify-content: space-evenly;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 10px;
+        margin-top: 60px;
+    }
+    
+    .profile-card {
+        padding: 20px;
+    }
+    
+    .profile-form-actions {
+        flex-direction: column;
+    }
+    
+    .profile-btn {
+        width: 100%;
+    }
 }
